@@ -3,11 +3,13 @@
 IMG_NAME = polohb/nginx-rtmp
 CONTAINER_NAME = nginx-rtmp
 
+all: stop clean build run
+
 build:
 	docker build -t $(IMG_NAME) .
 
 run:
-	docker run -d -p 1935:1935 --name $(CONTAINER_NAME) $(IMG_NAME)
+	docker run -d -p 1935:1935 -p 8080:80 --name $(CONTAINER_NAME) $(IMG_NAME)
 
 clean:
 	docker rm -v -f $(CONTAINER_NAME)
