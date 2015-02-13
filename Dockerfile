@@ -19,12 +19,13 @@ RUN mkdir -p /opt/nginx/ \
     && make \
     && make install \
     && cd / \
-    && rm -rf /opt/nginx \
     && curl --fail --silent --location --retry 3 https://raw.githubusercontent.com/JasonGiedymin/nginx-init-ubuntu/master/nginx -o /etc/init.d/nginx \
     && chmod +x /etc/init.d/nginx \
     && update-rc.d nginx defaults \
     && service nginx start \
-    && service nginx stop
+    && service nginx stop \
+    && cp /opt/nginx/nginx-rtmp-module-master/stat.xsl /usr/local/nginx/html/ \
+    && rm -rf /opt/nginx 
 
 ADD ./nginx.conf /usr/local/nginx/conf/nginx.conf
 
@@ -35,9 +36,8 @@ EXPOSE 1935
 EXPOSE 80
  
     
-#CMD /usr/local/nginx/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+CMD /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf -g "daemon off;"
 
-CMD /usr/local/nginx/sbin/nginx  -g "daemon off;"
 
 
 
